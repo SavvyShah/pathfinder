@@ -1,0 +1,93 @@
+/*
+  ____ ___  ______   ______  ___ ____ _   _ _____
+  / ___/ _ \|  _ \ \ / /  _ \|_ _/ ___| | | |_   _|
+ | |  | | | | |_) \ V /| |_) || | |  _| |_| | | |
+ | |__| |_| |  __/ | | |  _ < | | |_| |  _  | | |
+  \____\___/|_|    |_| |_| \_\___\____|_| |_| |_|
+
+  ____  _   _ _   _ ____  _   _    _    __  __
+ / ___|| | | | | | | __ )| | | |  / \  |  \/  |
+ \___ \| |_| | | | |  _ \| |_| | / _ \ | |\/| |
+  ___) |  _  | |_| | |_) |  _  |/ ___ \| |  | |
+ |____/|_| |_|\___/|____/|_| |_/_/   \_\_|  |_|
+*/
+body{
+  background-color: white;
+}
+
+#btns{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  flex:1;
+}
+
+button {
+  background-color:rgb(0,200,200);
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 16px;
+  margin:10px;
+}
+
+button:hover{
+  cursor:pointer;
+}
+
+button:active{
+  padding: 13px 30px;
+}
+
+#root{
+  display:grid;
+  grid-template-columns:repeat(30, 1fr);
+  grid-template-rows:repeat(30, 1fr);
+  grid-gap: 5px 5px;
+  cursor:pointer;
+}
+
+div.cell{
+  background-color:aquamarine;
+  height:50px;
+  width:50px;
+  text-align:center;
+  border-radius:10px;
+}
+
+
+#A,#B{
+  background-color:teal;
+  font-size: 40px;
+}
+
+div.open{
+  animation-name:open;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+div.current{
+  background-color:green;
+}
+
+div.closed{
+  animation-name: closed;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes closed{
+  100%{
+    background-color:rgb(250,0,0)
+  }
+}
+
+@keyframes open{
+  100%{
+    background-color: rgb(0,200,100);
+  }
+}
