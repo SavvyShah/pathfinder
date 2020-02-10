@@ -34,35 +34,69 @@ let NODE_B;
 let xA,yA,xB,yB;
 let timers=[];
 
-function handleClick({target}){
-  if(NODE_A&&NODE_B)return true;
-  if(target.className=='cell'){
-   if(document.getElementById('A')){
-    target.setAttribute('id','B')
-    target.innerText="B"
-    NODE_B=target;
-    [xB,yB]=NODE_B.getAttribute('coords').split(",")
-  }
-  else{
-    NODE_A=target;
-    target.className="cell current"
-    target.innerText="A"
-    target.setAttribute('id','A');
-    [xA,yA]=NODE_A.getAttribute('coords').split(",")
-  } 
-  }
-}
-
-document.addEventListener('click',handleClick)
-
-//EOF-SELECT NODE
-
-//START RESET
-
 const START_BUTTON=document.getElementById('start');
 const RESET_BUTTON=document.getElementById('reset');
 const BLOCK_BUTTON=document.getElementById('block')
 let block_state=false;
+
+function handleClick({target}){
+  if(NODE_A&&NODE_B)return true;
+  if(!block_state){
+    if(target.className=='cell'){
+      if(document.getElementById('A')){
+       target.setAttribute('id','B')
+       target.innerText="B"
+       NODE_B=target;
+       [xB,yB]=NODE_B.getAttribute('coords').split(",")
+     }
+     else{
+         NODE_A=target;
+         target.className="cell current"
+         target.innerText="A"
+         target.setAttribute('id','A');
+         [xA,yA]=NODE_A.getAttribute('coords').split(",")
+     } 
+     }
+  }
+  
+}
+
+function handleMouseOver({target}){
+  if(!target.id && block_state){
+  target.className="cell block"
+  let [x,y]=target.getAttribute('coords').split(',')
+  x=Number(x);y=Number(y);
+
+  document.querySelector(`[coords='${x+1},${y}']`).className="cell block"
+}
+}
+
+function handleMouseDown(e){
+  e.preventDefault();
+  document.addEventListener("mouseover", handleMouseOver)
+  if(!e.target.id && block_state){
+    e.target.className="cell block"
+    let [x,y]=e.target.getAttribute('coords').split(',')
+    x=Number(x);y=Number(y);
+  
+    document.querySelector(`[coords='${x+1},${y}']`).className="cell block"
+  }
+  
+}
+
+function handleMouseUp(){
+  document.removeEventListener("mouseover",handleMouseOver)
+  block_state=false
+  document.getElementById('root').style.cursor="pointer"
+}
+
+document.addEventListener('click',handleClick)
+document.addEventListener('mousedown',handleMouseDown)
+document.addEventListener('mouseup',handleMouseUp)
+//EOF-SELECT NODE
+
+//START RESET
+
 
 function handleStart(){
   if(!NODE_B)return false;
@@ -75,7 +109,7 @@ function handleStart(){
       if((document.getElementById("B").className)=="cell current") return;
   
       assignCurrentNode();
-    },i*1000)
+    },i*100)
   }
 
 }
@@ -86,8 +120,8 @@ function handleReset(){
   }
   if(NODE_A)NODE_A.removeAttribute('id')
   if(NODE_B)NODE_B.removeAttribute('id')
-  NODE_A.innerText="";
-  NODE_B.innerText=""
+  if(NODE_A)NODE_A.innerText="";
+  if(NODE_B)NODE_B.innerText=""
   NODE_A=null;
   NODE_B=null;
   
@@ -98,15 +132,18 @@ function handleReset(){
   }
 }
 
-function handleBlock(){
+function handleBlock({target}){
   block_state=!block_state;
-  if(block_state==true)document.getElementById('root').style.cursor="crosshair"
+  if(block_state==true){
+    document.getElementById('root').style.cursor="crosshair"
+  }
   else document.getElementById('root').style.cursor="pointer"
 }
 
+
 START_BUTTON.addEventListener('click',handleStart);
 RESET_BUTTON.addEventListener('click',handleReset);
-BLOCK_BUTTON.addEventListener('click', handleBlock)
+BLOCK_BUTTON.addEventListener('click', handleBlock);
 //EOF START RESET
 
 export {xA,xB,yA,yB};

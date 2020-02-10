@@ -11,7 +11,7 @@ function addOpenNodes(currentNode){
           let el=document.querySelector(`[coords='${i+','+j}']`)
           if(el.id=="A")break;
           el.setAttribute("fcost",fcost(i,j));
-          if(el.className!="cell closed")el.className='cell open';
+          if(el.className!="cell closed" && el.className!="cell block")el.className='cell open';
         }
       }
     }
