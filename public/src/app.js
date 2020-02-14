@@ -62,6 +62,7 @@ function handleClick({target}){
 }
 
 function handleMouseOver({target}){
+  
   if(!target.id && block_state){
   target.className="cell block"
   let [x,y]=target.getAttribute('coords').split(',')
